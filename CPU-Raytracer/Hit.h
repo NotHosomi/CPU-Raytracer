@@ -11,8 +11,7 @@ struct Hit
 	{
 		float d1 = (position - ray_origin).norm();
 		float d2 = (new_pos - ray_origin).norm();
-		if (d2 < d1)
-			return true;
+		return d2 < d1;
 	}
 	// hit 
 	Vec3 position = { 1024, 1024, 1024 };

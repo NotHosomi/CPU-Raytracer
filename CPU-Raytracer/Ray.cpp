@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <cmath>
 #include "BVHNode.h"
+#include <iostream>
 
 Ray::Ray(Vec3 origin, Vec3 dir) :
 	origin(origin),	dir(dir)
@@ -91,9 +92,12 @@ Colour Ray::cast(std::vector<Primitive*>* demo, int depth)
 	}
 }
 #endif
+
+//  UNUSED IN FAVOUR OF BVHNode.search()
+#if false
 Colour Ray::cast(const BVHNode& tree, int depth)
 {
-	Hit hit;
+	Hit* hit = nullptr;
 	//if (demo.intersect(*this, hit_point))
 	if (tree.search(*this, hit))
 	{
@@ -129,11 +133,19 @@ Colour Ray::cast(const BVHNode& tree, int depth)
 			return (1 - reflectivity) * cast(tree, depth) * getLight(hit)
 		}
 #else
-		return genColFromNormal(hit.normal);
+		if (hit)
+		{
+			return genColFromNormal(hit->normal);
+		}
+		else
+		{
+			std::cout << "Something has gone wrong here" << std::endl;
+		}
 #endif
 	}
 	return Colour(0, 0, 0.3);
 }
+#endif
 
 void Ray::reflect(Vec3 normal)
 {

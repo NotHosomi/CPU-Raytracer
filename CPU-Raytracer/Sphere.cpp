@@ -42,16 +42,12 @@ bool Sphere::intersect(Ray r, Hit* hit)
 
 	if (t0 > 0)
 	{
-		hit.position = r.at(t0);
-		hit.normal = (hit.position - origin).normalized();
-		hit.surf_colour = colour;
+		validateHit(r.at(t0), r, hit);
 		return true;
 	}
 	if(t1 > 0)
 	{
-		hit.position = r.at(t1);
-		hit.normal = (hit.position - origin).normalized();
-		hit.surf_colour = colour;
+		validateHit(r.at(t1), r, hit);
 		return true;
 	}
 	return false;
@@ -64,11 +60,14 @@ bool Sphere::validateHit(const Vec3& pos, Ray r, Hit* hit)
 		hit = new Hit(pos,
 			(pos - origin).normalized(),
 			colour);
+		return true;
 	}
-	else if (hit->compareDist(r.o(), pos))
+	if (hit->compareDist(r.o(), pos))
 	{
 		hit->position = pos;
 		hit->normal = (pos - origin).normalized();
 		hit->surf_colour = colour;
+		return true;
 	}
+	return false;
 }

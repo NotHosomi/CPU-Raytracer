@@ -17,7 +17,7 @@ public:
 #endif
 	Colour cast(const BVHNode& tree, int depth);
 
-	static constexpr int MAX_BOUNCES = 1;
+	static constexpr int MAX_BOUNCES = 3;
 
 	Vec3 o() { return origin; }
 	Vec3 d() { return dir;  }

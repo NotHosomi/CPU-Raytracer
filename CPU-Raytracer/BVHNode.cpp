@@ -98,11 +98,7 @@ bool BVHNode::search(const Ray& r, Hit* hit_info) const
 
     if (leaf != nullptr)
     {
-        if (leaf->intersect(r, hit_info))
-        {
-            return true;
-        }
-        return false;
+        return leaf->intersect(r, hit_info);
     }
 
     bool collision = false;
