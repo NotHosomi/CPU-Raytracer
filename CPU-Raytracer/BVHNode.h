@@ -7,15 +7,18 @@
 class BVHNode
 {
 public:
-	BVHNode(Primitive* leaf_obj);
 	BVHNode(std::vector<Primitive*> geometry);
+	BVHNode(Primitive* leaf_obj);
+	~BVHNode();
 
-	bool search(const Ray& r, Hit& hit_info);
+	bool search(const Ray& r, Hit* hit_info) const;
 
 private:
-	BVHNode* left;
-	BVHNode* right;
+	BBox findBBox(const std::vector<Primitive*>& geometry) const;
+
+	BVHNode* left = nullptr;
+	BVHNode* right = nullptr;
 	BBox AABB;
-	Primitive* leaf;
+	Primitive* leaf = nullptr;
 };
 

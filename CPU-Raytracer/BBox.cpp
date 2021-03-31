@@ -105,6 +105,11 @@ bool BBox::intersect(Ray r, Vec3& hit) const
 	return false;
 }
 
+float BBox::surfaceArea() const
+{
+	return 2 * extents.x() * extents.y() + 2 * extents.y() * extents.z() + 2 * extents.x() * extents.z();
+}
+
 bool BBox::intersection(float d1, float d2, Ray r, Vec3& hit) const
 {
 	if ((d1 * d2) >= 0.0f)

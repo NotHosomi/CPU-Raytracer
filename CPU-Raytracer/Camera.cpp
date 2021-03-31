@@ -13,7 +13,7 @@ Camera::Camera(int x_res, int y_res, float fov)
 	//pix_ang = (fov / x_res) * M_PI / 180.0;
 }
 
-void Camera::Capture(std::string filename)
+void Camera::Capture(const BVHNode& geometry, std::string filename)
 {
 	BMP::BMP img(_x, _y, false);
 
@@ -48,7 +48,7 @@ void Camera::Capture(std::string filename)
 		for (int j = -_x / 2.0; j < _x / 2.0; ++j)
 		{
 			ray_dir.y() = j * step;
-			Colour pxl = fireRay(ray_dir.normalized());
+			Colour pxl = fireRay(geometry, ray_dir.normalized());
 			img.set_pixel(j + _x / 2.0, i + _y / 2.0, (uint8_t)(pxl.r * 255), (uint8_t)(pxl.g * 255), (uint8_t)(pxl.b * 255), 0);
 		}
 	}
@@ -58,44 +58,22 @@ void Camera::Capture(std::string filename)
 	img.write(filename.c_str());
 }
 
-//std::vector<Colour> Camera::Capture()
-//{
-//	std::vector<Colour> img;
-//	// Rotation data
-//	Quat x_step;
-//	x_step = AngleAxis<double>(pix_ang, Vec3::UnitZ());
-//	Quat y_step;
-//	y_step = AngleAxis<double>(pix_ang, Vec3::UnitY());
-//	Quat sl_startang;
-//	sl_startang = AngleAxis<double>(-pix_ang * (_y/2.0), Vec3::UnitY())
-//				* AngleAxis<double>(-pix_ang * (_x/2.0), Vec3::UnitZ());
-//	Vec3 scanline_start = sl_startang * look_dir;
-//
-//	
-//	for (int i = _y / 2.0; i < _y / 2.0; ++i)
-//	{
-//		Vec3 ray_ang = scanline_start;
-//		for (int j = _x / 2.0; j < _x / 2.0; ++j)
-//		{
-//			img.push_back(fireRay(ray_ang));
-//			ray_ang = x_step * ray_ang;
-//		}
-//		scanline_start = y_step * scanline_start;
-//	}
-//	return img;
-//}
 
 
-
-Colour Camera::fireRay(Vec3 dir)
+Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 {
 
-	//setup a debug box primitive
-	Sphere demo_prim( { 10, 1.7, 0.6 }, 0.5);
-	//Primitive demo_prim({ 10, 1.7, 0.6 },
-	//	{ -0.5, -0.5, -0.5 },
-	//	{ 0.5, 0.5, 0.5 });
-
 	Ray r(origin, dir * DRAW_DIST);
-	return r.cast(demo_prim, 0);
+	Hit hit;
+	if (!root.search(r, hit))
+	{
+
+	}
+	return genColFromNormal(hit.normal);
+}
+
+Colour Camera::genColFromNormal(Vec3 normal)
+{
+	normal = normal.cwiseAbs();
+	return Colour(normal.x(), normal.y(), normal.z());
 }

@@ -2,16 +2,18 @@
 #include "Ray.h"
 
 Sphere::Sphere(Vec3 position, float radius) :
-	Primitive(position, { -radius, -radius, -radius }, { radius, radius, radius }),
+	Primitive(position,
+			Vec::newVec3(-radius, -radius, -radius),
+			Vec::newVec3(radius, radius, radius)),
 	radius(radius)
 {}
 
-bool Sphere::intersect(Ray r, Hit& hit_point) override
+bool Sphere::intersect(Ray r, Hit* hit)
 {
 	// Quadratic formula
 	Vec3 L = r.o() - origin;
 	float a = r.d().dot(r.d());
-	float b = 2.0 * L.dot(r.d());
+	float b = 2.0f * L.dot(r.d());
 	float c = L.dot(L) - radius * radius;
 	float discriminant = b * b - 4 * a * c;
 	// no hit
@@ -20,7 +22,8 @@ bool Sphere::intersect(Ray r, Hit& hit_point) override
 	// tangent
 	if (discriminant == 0)
 	{
-		hit = r.at(-0.5 * b / a);
+		Vec3 pos = r.at(-0.5f * b / a);
+
 		return true;
 	}
 	// double intersect
@@ -39,13 +42,33 @@ bool Sphere::intersect(Ray r, Hit& hit_point) override
 
 	if (t0 > 0)
 	{
-		hit = r.at(t0);
+		hit.position = r.at(t0);
+		hit.normal = (hit.position - origin).normalized();
+		hit.surf_colour = colour;
 		return true;
 	}
 	if(t1 > 0)
 	{
-		hit = r.at(t1);
+		hit.position = r.at(t1);
+		hit.normal = (hit.position - origin).normalized();
+		hit.surf_colour = colour;
 		return true;
 	}
 	return false;
+}
+
+bool Sphere::validateHit(const Vec3& pos, Ray r, Hit* hit)
+{
+	if (hit == nullptr)
+	{
+		hit = new Hit(pos,
+			(pos - origin).normalized(),
+			colour);
+	}
+	else if (hit->compareDist(r.o(), pos))
+	{
+		hit->position = pos;
+		hit->normal = (pos - origin).normalized();
+		hit->surf_colour = colour;
+	}
 }

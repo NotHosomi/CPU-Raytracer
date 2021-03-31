@@ -3,11 +3,22 @@
 
 #include "Eigen.h"
 #include "Camera.h"
+#include <vector>
+#include "Sphere.h"
+#include "BVHNode.h"
 
 int main()
 {
-    std::cout << "Running!\n";
+    std::vector<Primitive*> geometry;
+
+    geometry.emplace_back(new Sphere({ 10, 1.7, 0.6 }, 0.5));
+    geometry.emplace_back(new Sphere({ 11, 0.2, -0.6 }, 0.4));
+    geometry.emplace_back(new Sphere({ 8, 0.2, -0.6 }, 0.2));
+    BVHNode tree = BVHNode(geometry);
+
     Camera cam(800, 450, 90);
-    cam.Capture("test.bmp");
+
+    std::cout << "Running!\n";
+    cam.Capture(tree, "test.bmp");
     std::cout << "Complete!" << std::endl;
 }
