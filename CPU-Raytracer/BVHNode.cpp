@@ -4,6 +4,13 @@
 
 BVHNode::BVHNode(std::vector<Primitive*> geometry)
 {
+    // are we a leaf?
+    if (geometry.size() == 1)
+    {
+        leaf = geometry.back();
+        AABB = leaf->getBBox();
+        return;
+    }
     // find our BBox
     AABB = findBBox(geometry);
     float surface_area = AABB.surfaceArea();
@@ -45,22 +52,8 @@ BVHNode::BVHNode(std::vector<Primitive*> geometry)
     //}
 
     // build lower nodes
-    if (left_split.size() == 1)
-    {
-        left = new BVHNode(left_split[0]);
-    }
-    else
-    {
-        left = new BVHNode(left_split);
-    }
-    if (right_split.size() == 1)
-    {
-        right = new BVHNode(left_split[0]);
-    }
-    else
-    {
-        right = new BVHNode(right_split);
-    }
+    left = new BVHNode(left_split);
+    right = new BVHNode(right_split);
 }
 
 BVHNode::BVHNode(Primitive* leaf_obj) :
@@ -101,9 +94,9 @@ bool BVHNode::search(const Ray& r, Hit* hit_info) const
         return leaf->intersect(r, hit_info);
     }
 
-    bool collision = false;
-    collision = left->search(r, hit_info);
-    return right->search(r, hit_info) || collision;
+    bool col_l = left->search(r, hit_info);
+    bool col_r = right->search(r, hit_info);
+    return  col_l || col_r;
 }
 
 BBox BVHNode::findBBox(const std::vector<Primitive*>& geometry) const
