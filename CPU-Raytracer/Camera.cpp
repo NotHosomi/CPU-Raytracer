@@ -44,10 +44,12 @@ void Camera::Capture(const BVHNode& geometry, std::string filename)
 	Vec3 ray_dir = look_dir;
 	for (int i = -_y / 2.0; i < _y / 2.0; ++i)
 	{
+		std::cout << "x:\t" << i/* << ",\ty:\t" << j */<< std::endl;
 		ray_dir.z() = i * step;
 		for (int j = -_x / 2.0; j < _x / 2.0; ++j)
 		{
 			ray_dir.y() = j * step;
+			//std::cout << "x:\t" << i << ",\ty:\t" << j << std::endl;
 			Colour pxl = fireRay(geometry, ray_dir.normalized());
 			img.set_pixel(j + _x / 2.0, i + _y / 2.0, (uint8_t)(pxl.r * 255), (uint8_t)(pxl.g * 255), (uint8_t)(pxl.b * 255), 0);
 		}
@@ -65,21 +67,29 @@ Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 	Ray r(origin, dir * DRAW_DIST);
 	Hit* hit = nullptr;
 	bool search_res = root.search(r, hit);
-	if (search_res == (hit == nullptr))
-	{
-		if (search_res)
-			std::cout << "WARNING! search returned true, but no hitinfo" << std::endl;
-		else
-			std::cout << "WARNING! search returned false, but gave hitinfo" << std::endl;
-		return Colour(0, 0, 0);
-	}
-	if(hit == nullptr)
-	{
-		return Colour(0, 0, 0);
-	}
-	Colour c = genColFromNormal(hit->normal);
-	delete hit;
+
+	Colour c;
+	if (search_res)
+		c = Colour(1, 0.2, 0.2);
+	else
+		c = Colour(0.1, 0.1, 0.2);
 	return c;
+
+	//if (search_res == (hit == nullptr))
+	//{
+	//	if (search_res)
+	//		std::cout << "WARNING! search returned true, but no hitinfo" << std::endl;
+	//	else
+	//		std::cout << "WARNING! search returned false, but gave hitinfo" << std::endl;
+	//	return Colour(0, 0, 0);
+	//}
+	//if(hit == nullptr)
+	//{
+	//	return Colour(0, 0, 0);
+	//}
+	//Colour c = genColFromNormal(hit->normal);
+	//delete hit;
+	//return c;
 }
 
 Colour Camera::genColFromNormal(Vec3 normal)
