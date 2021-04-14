@@ -9,7 +9,7 @@ Sphere::Sphere(Vec3 position, float radius) :
 	radius(radius)
 {}
 
-bool Sphere::intersect(Ray r, Hit* hit)
+bool Sphere::intersect(Ray r, Hit& hit)
 {
 	// Quadratic formula
 	Vec3 L = r.o() - origin;
@@ -53,21 +53,22 @@ bool Sphere::intersect(Ray r, Hit* hit)
 	return false;
 }
 
-bool Sphere::validateHit(const Vec3& pos, Ray r, Hit* hit)
+bool Sphere::validateHit(const Vec3& pos, Ray r, Hit& hit)
 {
-	if (hit == nullptr)
+	if (!hit.isInitialized())
 	{
-		hit = new Hit(pos,
-			(pos - origin).normalized(),
-			colour);
+		hit.init();
+		hit.position = pos,
+		hit.normal = (pos - origin).normalized(),
+		hit.surf_colour = colour;
 		return true;
 	}
 	std::cout << "multiple hits detected" << std::endl;
-	if (hit->compareDist(r.o(), pos))
+	if (hit.compareDist(r.o(), pos))
 	{
-		hit->position = pos;
-		hit->normal = (pos - origin).normalized();
-		hit->surf_colour = colour;
+		hit.position = pos;
+		hit.normal = (pos - origin).normalized();
+		hit.surf_colour = colour;
 		return true;
 	}
 	return false;

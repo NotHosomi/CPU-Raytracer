@@ -11,7 +11,7 @@ public:
 	BVHNode(Primitive* leaf_obj);
 	~BVHNode();
 
-	bool search(const Ray& r, Hit* hit_info) const;
+	bool search(const Ray& r, Hit& hit_info) const;
 	void debug(int& id, int& depth) const;
 
 private:

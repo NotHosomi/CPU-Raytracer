@@ -65,10 +65,10 @@ void Camera::Capture(const BVHNode& geometry, std::string filename)
 Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 {
 	Ray r(origin, dir * DRAW_DIST);
-	Hit* hit = nullptr;
+	Hit hit;
 	bool search_res = root.search(r, hit);
 
-	if (search_res == (hit == nullptr))
+	if (search_res != hit.isInitialized())
 	{
 		if (search_res)
 		{
@@ -80,13 +80,12 @@ Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 			std::cout << "WARNING! search returned false, but gave hitinfo" << std::endl;
 		}
 	}
-	if(hit == nullptr)
+	if(hit.isInitialized())
 	{
-		return Colour(0, 0, 0);
+		Colour c = genColFromNormal(hit.normal);
+		return c;
 	}
-	Colour c = genColFromNormal(hit->normal);
-	delete hit;
-	return c;
+	return Colour(0, 0, 0);
 }
 
 Colour Camera::genColFromNormal(Vec3 normal)

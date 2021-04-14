@@ -84,7 +84,7 @@ BVHNode::~BVHNode()
     //}
 }
 
-bool BVHNode::search(const Ray& r, Hit* hit_info) const
+bool BVHNode::search(const Ray& r, Hit& hit_info) const
 {
     Vec3 unused_parameter;
     if (!AABB.intersect(r, unused_parameter))
