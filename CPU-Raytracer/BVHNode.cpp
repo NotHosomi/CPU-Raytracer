@@ -134,11 +134,11 @@ BBox BVHNode::findBBox(const std::vector<Primitive*>& geometry) const
             mins.z() = i_mins.z();
 
         Vec3 i_maxs = prim->getBBox().getMax();
-        if (i_maxs.x() < maxs.x())
+        if (i_maxs.x() > maxs.x())
             maxs.x() = i_maxs.x();
-        if (i_maxs.y() < maxs.y())
+        if (i_maxs.y() > maxs.y())
             maxs.y() = i_maxs.y();
-        if (i_maxs.z() < maxs.z())
+        if (i_maxs.z() > maxs.z())
             maxs.z() = i_maxs.z();
         // not using for loop to interate thru vector coeffs, cuz why spend an extra tick incrementing the iterator :^)
     }
