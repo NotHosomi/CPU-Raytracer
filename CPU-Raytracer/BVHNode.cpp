@@ -1,6 +1,7 @@
 #include "BVHNode.h"
 #include "Ray.h"
 #include <algorithm>
+#include <iostream>
 
 BVHNode::BVHNode(std::vector<Primitive*> geometry)
 {
@@ -97,6 +98,23 @@ bool BVHNode::search(const Ray& r, Hit* hit_info) const
     bool col_l = left->search(r, hit_info);
     bool col_r = right->search(r, hit_info);
     return  col_l || col_r;
+}
+
+void BVHNode::debug(int& id, int& depth) const
+{
+    depth++;
+    id++;
+    if (leaf)
+    {
+        std::cout << depth << " - " << id << ":\tLeaf\nUP" << std::endl;
+        depth--;
+        return;
+    }
+    std::cout << "LEFT: ";
+    left->debug(id, depth);
+    std::cout << "RIGHT: ";
+    right->debug(id, depth);
+    std::cout << "UP" << std::endl;
 }
 
 BBox BVHNode::findBBox(const std::vector<Primitive*>& geometry) const

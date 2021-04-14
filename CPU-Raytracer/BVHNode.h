@@ -12,6 +12,7 @@ public:
 	~BVHNode();
 
 	bool search(const Ray& r, Hit* hit_info) const;
+	void debug(int& id, int& depth) const;
 
 private:
 	BBox findBBox(const std::vector<Primitive*>& geometry) const;
