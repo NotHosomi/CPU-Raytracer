@@ -1,5 +1,6 @@
 #include "Sphere.h"
 #include "Ray.h"
+#include <iostream>
 
 Sphere::Sphere(Vec3 position, float radius) :
 	Primitive(position,
@@ -22,8 +23,7 @@ bool Sphere::intersect(Ray r, Hit* hit)
 	// tangent
 	if (discriminant == 0)
 	{
-		Vec3 pos = r.at(-0.5f * b / a);
-
+		validateHit(r.at(-0.5f * b / a), r, hit);
 		return true;
 	}
 	// double intersect
@@ -62,6 +62,7 @@ bool Sphere::validateHit(const Vec3& pos, Ray r, Hit* hit)
 			colour);
 		return true;
 	}
+	std::cout << "multiple hits detected" << std::endl;
 	if (hit->compareDist(r.o(), pos))
 	{
 		hit->position = pos;
