@@ -82,7 +82,7 @@ Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 	}
 	if(hit.isInitialized())
 	{
-		Colour c = genColFromNormal(hit.normal);
+		Colour c = genColFromNormal(hit.normal); // (Colour of light * surface reflectance * dot(normal, dir to light)) / dist to light source squared
 		return c;
 	}
 	return Colour(0, 0, 0);
