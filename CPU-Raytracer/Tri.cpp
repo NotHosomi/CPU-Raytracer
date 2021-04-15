@@ -38,12 +38,12 @@ bool Tri::intersect(Ray r, Hit& hit)
 	// check intersection point within tri
 	for (int i = 0; i < 3; ++i)
 	{
-		if(normal.dot(edges[i].cross(pos - verts[i])) > 0)
+		if(normal.dot(edges[i].cross(pos - verts[i])) < 0)
 		{
 			// pos is outside of the tri
 			return false;
 		}
-		std::cout << "e" << i << std::endl;
+		// TODO: WHY DOESNT EITHER OF THESE METHODS WORK?!
 	}
 	validateHit(pos, r, hit);
 	return true;
