@@ -21,10 +21,10 @@ Tri::Tri(Vec3 a, Vec3 b, Vec3 c) :
 	normal = edge3.cross(edge1);
 	plane_depth = normal.dot(a);
 
-	// precompute edges
-	edges[0] = verts[1] - verts[0];
-	edges[1] = verts[2] - verts[1];
-	edges[2] = verts[0] - verts[2];
+	// precompute edge normals
+	edge_normals[0] = AngleAxisf(-0.5 * M_PI, normal) * (verts[1] - verts[0]);
+	edge_normals[1] = AngleAxisf(-0.5 * M_PI, normal) * (verts[2] - verts[1]);
+	edge_normals[2] = AngleAxisf(-0.5 * M_PI, normal) * (verts[0] - verts[2]);
 }
 
 bool Tri::intersect(Ray r, Hit& hit)
@@ -38,7 +38,8 @@ bool Tri::intersect(Ray r, Hit& hit)
 	// check intersection point within tri
 	for (int i = 0; i < 3; ++i)
 	{
-		if(normal.dot(edges[i].cross(pos - verts[i])) > 0)
+		Vec3 diff = pos - verts[i];
+		if(diff.dot(edge_normals[i]) > 0)
 		{
 			// pos is outside of the tri
 			return false;
