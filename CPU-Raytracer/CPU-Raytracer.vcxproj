@@ -151,6 +151,7 @@
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Tri.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap_format.h" />
@@ -160,9 +161,11 @@
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Eigen.h" />
     <ClInclude Include="Hit.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Tri.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

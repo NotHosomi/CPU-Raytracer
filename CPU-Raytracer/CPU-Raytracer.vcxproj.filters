@@ -45,6 +45,9 @@
     <ClCompile Include="Eigen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Tri.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Eigen.h">
@@ -75,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tri.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

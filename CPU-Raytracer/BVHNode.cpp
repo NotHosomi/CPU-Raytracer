@@ -125,22 +125,23 @@ BBox BVHNode::findBBox(const std::vector<Primitive*>& geometry) const
     maxs = geometry[0]->getBBox().getMax();
     for (auto prim : geometry)
     {
-        Vec3 i_mins = prim->getBBox().getMins();
-        if (i_mins.x() < mins.x())
-            mins.x() = i_mins.x();
-        if (i_mins.y() < mins.y())
-            mins.y() = i_mins.y();
-        if (i_mins.z() < mins.z())
-            mins.z() = i_mins.z();
+        //Vec3 i_mins = prim->getBBox().getMins();
+        //if (i_mins.x() < mins.x())
+        //    mins.x() = i_mins.x();
+        //if (i_mins.y() < mins.y())
+        //    mins.y() = i_mins.y();
+        //if (i_mins.z() < mins.z())
+        //    mins.z() = i_mins.z();
+        mins = Vec::min(prim->getBBox().getMins(), mins);
 
-        Vec3 i_maxs = prim->getBBox().getMax();
-        if (i_maxs.x() > maxs.x())
-            maxs.x() = i_maxs.x();
-        if (i_maxs.y() > maxs.y())
-            maxs.y() = i_maxs.y();
-        if (i_maxs.z() > maxs.z())
-            maxs.z() = i_maxs.z();
-        // not using for loop to interate thru vector coeffs, cuz why spend an extra tick incrementing the iterator :^)
+        //Vec3 i_maxs = prim->getBBox().getMax();
+        //if (i_maxs.x() > maxs.x())
+        //    maxs.x() = i_maxs.x();
+        //if (i_maxs.y() > maxs.y())
+        //    maxs.y() = i_maxs.y();
+        //if (i_maxs.z() > maxs.z())
+        //    maxs.z() = i_maxs.z();
+        maxs = Vec::max(prim->getBBox().getMax(), maxs);
     }
     return BBox(mins, maxs);
 }

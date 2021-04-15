@@ -53,23 +53,7 @@ bool Sphere::intersect(Ray r, Hit& hit)
 	return false;
 }
 
-bool Sphere::validateHit(const Vec3& pos, Ray r, Hit& hit)
+void Sphere::findNormal(Hit& hit)
 {
-	if (!hit.isInitialized())
-	{
-		hit.init();
-		hit.position = pos,
-		hit.normal = (pos - origin).normalized(),
-		hit.surf_colour = colour;
-		return true;
-	}
-	std::cout << "multiple hits detected" << std::endl;
-	if (hit.compareDist(r.o(), pos))
-	{
-		hit.position = pos;
-		hit.normal = (pos - origin).normalized();
-		hit.surf_colour = colour;
-		return true;
-	}
-	return false;
+	hit.normal = (hit.position - origin).normalized();
 }
