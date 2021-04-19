@@ -162,16 +162,15 @@ bool Ray::refract(Vec3 normal, float old_index, float new_index)
 	if (normal.norm() != 1)
 		normal.normalize();
 
-	// https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
-	float n = old_index / new_index;
-	float cosI = dir.dot(normal);
-	float sinT2 = n * n * (1 - cosI * cosI);
-	if (sinT2 > 1) // Total Internal Reflection
+	float index = old_index / new_index;
+	float incident_cos = dir.dot(normal);
+	float result_sin2 = index * index * (1 - incident_cos * incident_cos);
+	if (result_sin2 > 1) // Total Internal Reflection
 	{
 		return false;
 	}
-	float cosT = std::sqrt(1 - sinT2);
-
+	float result_cos = std::sqrt(1 - result_sin2);
+	dir = dir * index + (index * incident_cos - result_cos) * normal;
 	return true;
 }
 

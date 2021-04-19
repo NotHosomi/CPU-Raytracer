@@ -44,7 +44,7 @@ bool Tri::intersect(Ray r, Hit& hit)
 			// pos is outside of the tri
 			return false;
 		}
-		std::cout << "e" << i << std::endl;
+		//std::cout << "e" << i << std::endl;
 	}
 	validateHit(pos, r, hit);
 	return true;
