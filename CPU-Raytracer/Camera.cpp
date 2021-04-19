@@ -44,7 +44,7 @@ void Camera::Capture(const BVHNode& geometry, std::string filename)
 	Vec3 ray_dir = look_dir;
 	for (int i = -_y / 2.0; i < _y / 2.0; ++i)
 	{
-		std::cout << "x: " << i << std::endl;
+		//std::cout << "x: " << i << std::endl;
 		ray_dir.z() = i * step;
 		for (int j = -_x / 2.0; j < _x / 2.0; ++j)
 		{
@@ -68,22 +68,9 @@ Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
 	Hit hit;
 	bool search_res = root.search(r, hit);
 
-	if (search_res != hit.isInitialized())
-	{
-		if (search_res)
-		{
-			std::cout << "WARNING! search returned true, but no hitinfo" << std::endl;
-			return Colour(1, 0, 1);
-		}
-		else
-		{
-			std::cout << "WARNING! search returned false, but gave hitinfo" << std::endl;
-		}
-	}
 	if(hit.isInitialized())
 	{
-		Colour c = genColFromNormal(hit.normal);
-		return c;
+		return genColFromNormal(hit.normal); // (Colour of light * surface reflectance * dot(normal, dir to light)) / dist to light source squared
 	}
 	return Colour(0, 0, 0);
 }
