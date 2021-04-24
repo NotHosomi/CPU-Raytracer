@@ -74,7 +74,6 @@ bool BBox::between(float value, float min, float max) const
 	return (value >= min) && (value <= max);
 }
 
-#if 1
 bool BBox::intersect(Ray r, Vec3& hit) const
 {
 	// check the line is near this bbox
@@ -89,17 +88,17 @@ bool BBox::intersect(Ray r, Vec3& hit) const
 		return true;
 	}
 
-	if (intersection(r.o().x() - mins.x(), r.at(1000).x() - mins.x(), r, hit) && validateHit(hit, 'x'))
+	if (intersection(r.o().x() - mins.x(), r.at(1000).x() - mins.x(), r, hit, 'x'))
 		return true;
-	if (intersection(r.o().y() - mins.y(), r.at(1000).y() - mins.y(), r, hit) && validateHit(hit, 'y'))
+	if (intersection(r.o().y() - mins.y(), r.at(1000).y() - mins.y(), r, hit, 'y'))
 		return true;
-	if (intersection(r.o().z() - mins.z(), r.at(1000).z() - mins.z(), r, hit) && validateHit(hit, 'z'))
+	if (intersection(r.o().z() - mins.z(), r.at(1000).z() - mins.z(), r, hit, 'z'))
 		return true;
-	if (intersection(r.o().x() - (mins.x() + extents.x()), r.at(1000).x() - (mins.x() + extents.x()), r, hit) && validateHit(hit, 'x'))
+	if (intersection(r.o().x() - (mins.x() + extents.x()), r.at(1000).x() - (mins.x() + extents.x()), r, hit, 'x'))
 		return true;
-	if (intersection(r.o().y() - (mins.y() + extents.y()), r.at(1000).y() - (mins.y() + extents.y()), r, hit) && validateHit(hit, 'y'))
+	if (intersection(r.o().y() - (mins.y() + extents.y()), r.at(1000).y() - (mins.y() + extents.y()), r, hit, 'y'))
 		return true;
-	if (intersection(r.o().z() - (mins.z() + extents.z()), r.at(1000).z() - (mins.z() + extents.z()), r, hit) && validateHit(hit, 'z'))
+	if (intersection(r.o().z() - (mins.z() + extents.z()), r.at(1000).z() - (mins.z() + extents.z()), r, hit, 'z'))
 		return true;
 
 	return false;
@@ -110,19 +109,21 @@ float BBox::surfaceArea() const
 	return 2 * extents.x() * extents.y() + 2 * extents.y() * extents.z() + 2 * extents.x() * extents.z();
 }
 
-bool BBox::intersection(float d1, float d2, Ray r, Vec3& hit) const
+// d1 is origin from vertex
+// d2 is ray_dest from vertex
+bool BBox::intersection(float d1, float d2, Ray r, Vec3& hit, char axis) const
 {
+	// is ray in direction of the plane 
 	if ((d1 * d2) >= 0.0f)
 		return false;
+	// is ray parallel to place
 	if (d1 == d2)
 		return false;
+	// find the ray-plane intersect point
 	hit = r.at(1000 * (-d1 / (d2 - d1)));
-	return true;
-}
 
-bool BBox::validateHit(Vec3 hit, char plane) const
-{
-	switch (plane)
+	// is the point within the face's bounds
+	switch (axis)
 	{
 	case 'x':
 		return between(hit.z(), mins.z(), mins.z() + extents.z())
@@ -136,58 +137,3 @@ bool BBox::validateHit(Vec3 hit, char plane) const
 	}
 	return false;
 }
-#else
-// TODO REFACTOR THIS
-bool BBox::intersect(Ray r, Vec3& hit) const
-{
-	//BBox line_bbox(r.o(), r.at(1000));
-	//if (!overlaps(line_bbox))
-	//	return false;
-
-	float t0 = (mins.x() - r.o().x()) / r.o().x();
-	float t1 = (maxs.x() - r.o().x()) / r.o().x();
-
-	if (t0 > t1)
-		std::swap(t0, t1);
-
-	// y
-	float ty0 = (mins.y() - r.o().y()) / r.d().y();
-	float ty1 = (maxs.y() - r.o().y()) / r.d().y();
-
-	if (ty0 > ty1)
-		std::swap(ty0, ty1);
-
-	if ((t0 > ty1) || (ty0 > t1))
-		return false;
-
-	// order roots
-	if (ty0 > t0)
-		t0 = ty0;
-	if (ty1 < t1)
-		t1 = ty1;
-
-	// z
-	float tz0 = (mins.z() - r.o().z()) / r.d().z();
-	float tz1 = (maxs.z() - r.o().z()) / r.d().z();
-
-	if (tz0 > tz1)
-		std::swap(tz0, tz1);
-
-	if ((t0 > tz1) || (tz0 > t1))
-		return false;
-
-	if (tz0 > t0)
-		t0 = tz0;
-	if (tz1 < t1)
-		t1 = tz1;
-
-	if (t0 < 0) {
-		t0 = t1;
-		if (t0 < 0) return false;
-	}
-
-	hit = r.at(t0);
-	return true;
-}
-#endif
-

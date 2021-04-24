@@ -22,8 +22,7 @@ public:
 
 private:
 	bool between(float value, float min, float max) const;
-	bool intersection(float d1, float d2, Ray r, Vec3& hit) const;
-	bool validateHit(Vec3 hit, char plane) const;
+	bool intersection(float d1, float d2, Ray r, Vec3& hit, char axis) const;
 	Vec3 mins = { 0, 0, 0 };
 	Vec3 extents = { 0, 0, 0 };
 	Vec3 maxs = { 0, 0, 0 };
