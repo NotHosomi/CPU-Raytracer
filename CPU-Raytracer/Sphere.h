@@ -7,7 +7,7 @@
 class Sphere : public Primitive
 {
 public:
-	Sphere(Vec3 position, float radius);
+	Sphere(Vec3 position, float radius, Colour col);
 	bool intersect(Ray r, Hit& hit) override;
 
 	float r() { return radius; }

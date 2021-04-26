@@ -8,7 +8,7 @@ class ray;
 class Primitive
 {
 public:
-	Primitive(Vec3 origin, Vec3 mins, Vec3 maxs);
+	Primitive(Vec3 origin, Vec3 mins, Vec3 maxs, Colour col);
 	BBox getBBox();
 	virtual bool intersect(Ray r, Hit& hit) = 0;
 	Colour col() { return colour; }

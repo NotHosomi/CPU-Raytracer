@@ -12,14 +12,7 @@ struct Colour
 	double b = 1;
 	double a = 1;
 
-
-	Colour& operator*=(float rhs)
-	{
-		r *= rhs;
-		g *= rhs;
-		b *= rhs;
-		return *this;
-	}
+	// Colour-Colour operators
 	Colour operator+(const Colour& rhs)
 	{
 		Colour out;
@@ -27,6 +20,40 @@ struct Colour
 		out.g = g + rhs.g;
 		out.b = b + rhs.b;
 		out.a = a + rhs.a; // Should alpha be ignored here?
+		return out;
+	}
+	Colour operator*(const Colour& rhs)
+	{
+		Colour out;
+		out.r = r * rhs.r;
+		out.g = g * rhs.g;
+		out.b = b * rhs.b;
+		out.a = a * rhs.a; // Should alpha be ignored here?
+		return out;
+	}
+
+	// Colour-Scalar operators
+	Colour& operator*=(float rhs)
+	{
+		r *= rhs;
+		g *= rhs;
+		b *= rhs;
+		return *this;
+	}
+	Colour operator*(const float& rhs)
+	{
+		Colour out;
+		out.r = r * rhs;
+		out.g = g * rhs;
+		out.b = b * rhs;
+		return out;
+	}
+	Colour operator/(const float& rhs)
+	{
+		Colour out;
+		out.r = r / rhs;
+		out.g = g / rhs;
+		out.b = b / rhs;
 		return out;
 	}
 };

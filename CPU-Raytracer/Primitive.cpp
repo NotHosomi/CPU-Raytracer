@@ -1,9 +1,10 @@
 #include "Primitive.h"
 #include "Ray.h"
 
-Primitive::Primitive(Vec3 origin, Vec3 min_extents, Vec3 max_extents) :
+Primitive::Primitive(Vec3 origin, Vec3 min_extents, Vec3 max_extents, Colour col) :
 	origin(origin),
-	bbox(origin + min_extents, origin + max_extents)
+	bbox(origin + min_extents, origin + max_extents),
+	colour(col)
 {}
 
 BBox Primitive::getBBox()

@@ -50,7 +50,7 @@ void Camera::Capture(const BVHNode& geometry, std::string filename)
 		{
 			ray_dir.y() = j * step;
 			//std::cout << "x:\t" << i << ",\ty:\t" << j << std::endl;
-			Colour pxl = fireRay(geometry, ray_dir.normalized());
+			Colour pxl = fireRay(origin, geometry, ray_dir.normalized());
 			img.set_pixel(j + _x / 2.0, i + _y / 2.0, (uint8_t)(pxl.r * 255), (uint8_t)(pxl.g * 255), (uint8_t)(pxl.b * 255), 0);
 		}
 	}
@@ -62,15 +62,16 @@ void Camera::Capture(const BVHNode& geometry, std::string filename)
 
 
 
-Colour Camera::fireRay(const BVHNode& root, Vec3 dir)
+Colour Camera::fireRay(Vec3 source, const BVHNode& root, Vec3 dir)
 {
-	Ray r(origin, dir * DRAW_DIST);
+	Ray r(source, dir * DRAW_DIST);
 	Hit hit;
 	bool search_res = root.search(r, hit);
 
 	if(hit.isInitialized())
 	{
-		return genColFromNormal(hit.normal); // (Colour of light * surface reflectance * dot(normal, dir to light)) / dist to light source squared
+		//return genColFromNormal(hit.normal); // (Colour of light * surface reflectance * dot(normal, dir to light)) / dist to light source squared
+		return (hit.surf_colour / M_PI) * light_ambient_col;
 	}
 	return Colour(0, 0, 0);
 }

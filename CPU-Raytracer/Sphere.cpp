@@ -2,10 +2,11 @@
 #include "Ray.h"
 #include <iostream>
 
-Sphere::Sphere(Vec3 position, float radius) :
+Sphere::Sphere(Vec3 position, float radius, Colour col) :
 	Primitive(position,
 			Vec::newVec3(-radius, -radius, -radius),
-			Vec::newVec3(radius, radius, radius)),
+			Vec::newVec3(radius, radius, radius),
+			col),
 	radius(radius)
 {}
 

@@ -5,10 +5,11 @@
 
 #include <iostream>
 
-Tri::Tri(Vec3 a, Vec3 b, Vec3 c) :
+Tri::Tri(Vec3 a, Vec3 b, Vec3 c, Colour col) :
 	Primitive((a + b + c)/3,
 		Vec::min(a, Vec::min(b, c)),
-		Vec::max(a, Vec::max(b, c)))
+		Vec::max(a, Vec::max(b, c)),
+		col)
 {
 	// store verts
 	verts[0] = a;

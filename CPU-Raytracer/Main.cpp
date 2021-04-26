@@ -16,16 +16,16 @@ int main()
     std::chrono::steady_clock::time_point tmr_1 = std::chrono::steady_clock::now();
     std::vector<Primitive*> geometry;
 
-    geometry.emplace_back(new Sphere({ 10, 1.7, 0.6 }, 0.5));
-    geometry.emplace_back(new Sphere({ 11, 0.2, -0.6 }, 0.4));
-    geometry.emplace_back(new Sphere({ 8, 0.4, -0.6 }, 0.2));
-    geometry.emplace_back(new Sphere({ 10, -1.7, 0.6 }, 0.1));
-    geometry.emplace_back(new Sphere({ 10, -0.5, 0.4 }, 0.4));
-    geometry.emplace_back(new Sphere({ 8, 0.3, -0.3 }, 0.3));
-    geometry.emplace_back(new Sphere({ 15, 3, -0.3 }, 0.1));
-    geometry.emplace_back(new Sphere({ 25, -5, -3 }, 2));
-    geometry.emplace_back(new Sphere({ 9, -1, 0.5 }, 0.3));
-    geometry.emplace_back(new Sphere({ 20, -4, 1 }, 0.3));
+    geometry.emplace_back(new Sphere({ 10, 1.7, 0.6 }, 0.5, Colour(1, 1, 1)));
+    geometry.emplace_back(new Sphere({ 11, 0.2, -0.6 }, 0.4, Colour(1, 0, 1)));
+    geometry.emplace_back(new Sphere({ 8, 0.4, -0.6 }, 0.2, Colour(1, 0, 0)));
+    geometry.emplace_back(new Sphere({ 10, -1.7, 0.6 }, 0.1, Colour(0, 1, 1)));
+    geometry.emplace_back(new Sphere({ 10, -0.5, 0.4 }, 0.4, Colour(0, 0, 1)));
+    geometry.emplace_back(new Sphere({ 8, 0.3, -0.3 }, 0.3, Colour(0, 1, 0)));
+    geometry.emplace_back(new Sphere({ 15, 3, -0.3 }, 0.1, Colour(0.4, 0.4, 1)));
+    geometry.emplace_back(new Sphere({ 25, -5, -3 }, 2, Colour(0.5, 1, 0.5)));
+    geometry.emplace_back(new Sphere({ 9, -1, 0.5 }, 0.3, Colour(0, 0.6, 0)));
+    geometry.emplace_back(new Sphere({ 20, -4, 1 }, 0.3, Colour(0.8, 0.8, 1)));
     //geometry.emplace_back(new Tri({ 15, -2, 0 }, { 15, -1, 0 }, { 15, -2, -1 }));
     BVHNode tree = BVHNode(geometry);
 #ifdef NDEBUG

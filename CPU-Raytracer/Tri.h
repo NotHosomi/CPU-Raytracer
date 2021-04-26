@@ -4,7 +4,7 @@ class Tri :
     public Primitive
 {
 public:
-    Tri(Vec3 a, Vec3 b, Vec3 c);
+    Tri(Vec3 a, Vec3 b, Vec3 c, Colour col);
     Vec3 verts[3] = { {0,0,0},{0,0,0},{0,0,0} };
     Vec3 edge_normals[3] = { {0,0,0},{0,0,0},{0,0,0} };
     Vec3 normal;
